@@ -20,13 +20,13 @@ In MoneyRunner run executable artifact
 java -jar MoneyRunner-1.0-executable.jar
 
 ```
-###Specifications
+### Specifications
 Database is in memory H2
 Spark is used to handling http requests and reponses
 There is a data intialization process with creating two accounts.
 account number:1010 balance:500,000
 account number:2020 balance:500,000
-###Sample requests
+### Sample requests
 Transfer money 
 ```
 curl -X POST \
