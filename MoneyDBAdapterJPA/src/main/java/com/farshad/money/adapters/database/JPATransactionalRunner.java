@@ -17,11 +17,13 @@ public class JPATransactionalRunner implements TransactionalRunner {
 		try {
 			runnable.run();
 			transaction.commit();
-			entityManager.clear();
+
 		} catch (Throwable e) {
 			if(transaction.isActive())
 				transaction.rollback();
 			throw e;
+		}finally {
+			entityManager.clear();
 		}
 	}
 	
