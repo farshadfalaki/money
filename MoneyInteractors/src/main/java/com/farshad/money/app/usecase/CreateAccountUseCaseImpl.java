@@ -29,6 +29,7 @@ public class CreateAccountUseCaseImpl extends TransactionalCommandUseCase<Create
     protected void executeInTransaction(CreateAccountRequest createAccountRequest) {
         logger.info(">>executeInTransaction " + createAccountRequest);
         validateRequestData(createAccountRequest);
+        validateBusinessRule(createAccountRequest);
         Account account = accountFactory.account();
         setFields(account,createAccountRequest);
         accountGateway.createAccount(account);
@@ -49,9 +50,14 @@ public class CreateAccountUseCaseImpl extends TransactionalCommandUseCase<Create
         }
     }
 
-    void setFields(Account account, CreateAccountRequest request) {
-        account.setAccountNumber(request.getAccountNumber());
-        account.setName(request.getName());
-        account.setBalance(request.getBalance());
+    void setFields(Account account, CreateAccountRequest createAccountRequest) {
+        account.setAccountNumber(createAccountRequest.getAccountNumber());
+        account.setName(createAccountRequest.getName());
+        account.setBalance(createAccountRequest.getBalance());
+    }
+    void validateBusinessRule(CreateAccountRequest createAccountRequest){
+        if(accountGateway.accountNumberExists(createAccountRequest.getAccountNumber())){
+            throw new UseCaseException(Messages.ACCOUNT_NUMBER_EXISTS);
+        }
     }
 }

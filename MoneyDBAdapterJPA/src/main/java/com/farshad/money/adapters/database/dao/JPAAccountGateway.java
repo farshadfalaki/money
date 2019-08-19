@@ -29,6 +29,11 @@ public class JPAAccountGateway implements AccountGateway {
     }
 
     @Override
+    public boolean accountNumberExists(String accountNumber) {
+        return jpaAccountDao.checkAccountExistenceByAccountNumber(accountNumber);
+    }
+
+    @Override
     public void updateAccount(Account account) {
         jpaAccountDao.persist((JPAAccount) account);
     }
