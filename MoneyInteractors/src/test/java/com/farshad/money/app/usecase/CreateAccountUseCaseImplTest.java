@@ -2,6 +2,9 @@ package com.farshad.money.app.usecase;
 
 import com.farshad.money.app.entity.Account;
 import com.farshad.money.ports.persistence.AccountGateway;
+import com.farshad.money.ports.usecase.exception.EmptyAccountNumberException;
+import com.farshad.money.ports.usecase.exception.EmptyNameException;
+import com.farshad.money.ports.usecase.exception.NegativeAmountException;
 import com.farshad.money.ports.usecase.exception.UseCaseException;
 import com.farshad.money.ports.usecase.request.CreateAccountRequest;
 import org.junit.Test;
@@ -27,24 +30,24 @@ public class CreateAccountUseCaseImplTest {
     public void executeInTransaction() {
     }
 
-    @Test(expected = UseCaseException.class)
-    public void validateRequestData_emptyAccountNumber_shouldThrowUseCaseException() {
+    @Test(expected = EmptyAccountNumberException.class)
+    public void validateRequestData_emptyAccountNumber_shouldThrowEmptyAccountNumberException() {
         //given
         CreateAccountRequest createAccountRequest = new CreateAccountRequest("","Alex",new BigDecimal("400"));
         //when
         createAccountUseCase.validateRequestData(createAccountRequest);
     }
 
-    @Test(expected = UseCaseException.class)
-    public void validateRequestData_emptyName_shouldThrowUseCaseException() {
+    @Test(expected = EmptyNameException.class)
+    public void validateRequestData_emptyName_shouldThrowEmptyNameException() {
         //given
         CreateAccountRequest createAccountRequest = new CreateAccountRequest("1234","",new BigDecimal("400"));
         //when
         createAccountUseCase.validateRequestData(createAccountRequest);
     }
 
-    @Test(expected = UseCaseException.class)
-    public void validateRequestData_minusOneBalance_shouldThrowUseCaseException() {
+    @Test(expected = NegativeAmountException.class)
+    public void validateRequestData_minusOneBalance_shouldThrowNegativeAmountException() {
         //given
         CreateAccountRequest createAccountRequest = new CreateAccountRequest("1234","Andre",new BigDecimal("-1"));
         //when
@@ -52,7 +55,7 @@ public class CreateAccountUseCaseImplTest {
     }
 
     @Test
-    public void validateRequestData_validRequest_shouldNotThrowUseCaseException() {
+    public void validateRequestData_validRequest_shouldNotThrowException() {
         //given
         CreateAccountRequest createAccountRequest = new CreateAccountRequest("1234","Andre",new BigDecimal("1"));
         //when

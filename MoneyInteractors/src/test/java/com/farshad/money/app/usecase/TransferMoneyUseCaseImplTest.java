@@ -2,8 +2,7 @@ package com.farshad.money.app.usecase;
 
 import com.farshad.money.app.entity.Account;
 import com.farshad.money.ports.persistence.AccountGateway;
-import com.farshad.money.ports.usecase.exception.Messages;
-import com.farshad.money.ports.usecase.exception.UseCaseException;
+import com.farshad.money.ports.usecase.exception.*;
 import com.farshad.money.ports.usecase.request.TransferMoneyRequest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +26,7 @@ public class TransferMoneyUseCaseImplTest {
     @InjectMocks
     TransferMoneyUseCaseImpl transferMoneyUseCase;
 
-    @Test(expected = UseCaseException.class)
+    @Test(expected = EmptyAccountNumberException.class)
     public void validateRequestData_emptyAccountNumber_shouldThrowUseCaseException() {
         //given
         TransferMoneyRequest transferMoneyRequest = new TransferMoneyRequest("","1234",new BigDecimal("230"));
@@ -35,32 +34,32 @@ public class TransferMoneyUseCaseImplTest {
         transferMoneyUseCase.validateRequestData(transferMoneyRequest);
     }
 
-    @Test(expected = UseCaseException.class)
-    public void validateRequestData_emptyDestinationAccountNumber_shouldThrowUseCaseException() {
+    @Test(expected = EmptyDestinationAccountNumberException.class)
+    public void validateRequestData_emptyDestinationAccountNumber_shouldThrowEmptyDestinationAccountNumberException() {
         //given
         TransferMoneyRequest transferMoneyRequest = new TransferMoneyRequest("1234","",new BigDecimal("230"));
         //when
         transferMoneyUseCase.validateRequestData(transferMoneyRequest);
     }
 
-    @Test(expected = UseCaseException.class)
-    public void validateRequestData_zeroTransferAmount_shouldThrowUseCaseException() {
+    @Test(expected = NegativeAmountException.class)
+    public void validateRequestData_zeroTransferAmount_shouldThrowNegativeAmountException() {
         //given
-        TransferMoneyRequest transferMoneyRequest = new TransferMoneyRequest("1234","2345",new BigDecimal("0"));
+        TransferMoneyRequest transferMoneyRequest = new TransferMoneyRequest("1234","2345",new BigDecimal("-10"));
         //when
         transferMoneyUseCase.validateRequestData(transferMoneyRequest);
     }
 
     @Test
-    public void validateRequestData_validData_shouldNotThrowUseCaseException() {
+    public void validateRequestData_validData_shouldNotThrowException() {
         //given
         TransferMoneyRequest transferMoneyRequest = new TransferMoneyRequest("1234","2345",new BigDecimal("900"));
         //when
         transferMoneyUseCase.validateRequestData(transferMoneyRequest);
     }
 
-    @Test(expected = UseCaseException.class)
-    public void validateBusinessRule_amountMoreThanBalance_shouldThrowUseCaseException() {
+    @Test(expected = LowBalanceException.class)
+    public void validateBusinessRule_amountMoreThanBalance_shouldThrowLowBalanceException() {
         //given
         BigDecimal amount = new BigDecimal("100000");
         when(account.getBalance()).thenReturn(new BigDecimal("40000"));
@@ -69,7 +68,7 @@ public class TransferMoneyUseCaseImplTest {
     }
 
     @Test
-    public void validateBusinessRule_amountLessThanBalance_shouldNotThrowUseCaseException() {
+    public void validateBusinessRule_amountLessThanBalance_shouldNotException() {
         //given
         BigDecimal amount = new BigDecimal("1000");
         when(account.getBalance()).thenReturn(new BigDecimal("40000"));
@@ -79,20 +78,20 @@ public class TransferMoneyUseCaseImplTest {
         verify(account).getBalance();
     }
 
-    @Test(expected = UseCaseException.class)
-    public void executeInTransaction_amountMoreThanBalance_shouldThrowUseCaseException() {
+    @Test(expected = LowBalanceException.class)
+    public void executeInTransaction_amountMoreThanBalance_shouldThrowLowBalanceException() {
         //given
         TransferMoneyRequest transferMoneyRequest = new TransferMoneyRequest("1234","2345",new BigDecimal("100000"));
-        doThrow(new UseCaseException(Messages.BALANCE_IS_LOW)).when(transferMoneyUseCase).validateBusinessRule(any(),any());
+        doThrow(new LowBalanceException(" [1234,100000]")).when(transferMoneyUseCase).validateBusinessRule(any(),any());
         //when
         transferMoneyUseCase.executeInTransaction(transferMoneyRequest);
     }
 
-    @Test(expected = UseCaseException.class)
-    public void executeInTransaction_emptyAccountNumber_shouldThrowUseCaseException() {
+    @Test(expected = EmptyAccountNumberException.class)
+    public void executeInTransaction_emptyAccountNumber_shouldThrowEmptyAccountNumberException() {
         //given
         TransferMoneyRequest transferMoneyRequest = new TransferMoneyRequest("","2345",new BigDecimal("100000"));
-        doThrow(new UseCaseException(Messages.ACCOUNT_NUMBER_IS_EMPTY)).when(transferMoneyUseCase).validateRequestData(transferMoneyRequest);
+        doThrow(new EmptyAccountNumberException()).when(transferMoneyUseCase).validateRequestData(transferMoneyRequest);
         //when
         transferMoneyUseCase.executeInTransaction(transferMoneyRequest);
     }

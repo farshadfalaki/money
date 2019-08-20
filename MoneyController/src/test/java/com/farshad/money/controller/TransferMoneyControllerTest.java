@@ -4,6 +4,7 @@ import com.farshad.money.controller.converter.DtoUseCaseConverter;
 import com.farshad.money.controller.dto.BaseResponseDto;
 import com.farshad.money.controller.dto.TransferMoneyRequestDto;
 import com.farshad.money.ports.usecase.CommandUseCase;
+import com.farshad.money.ports.usecase.exception.EmptyAccountNumberException;
 import com.farshad.money.ports.usecase.exception.Messages;
 import com.farshad.money.ports.usecase.exception.UseCaseException;
 import com.farshad.money.ports.usecase.request.TransferMoneyRequest;
@@ -47,7 +48,7 @@ public class TransferMoneyControllerTest {
         TransferMoneyRequestDto transferMoneyRequestDto = new TransferMoneyRequestDto("1010","","1500");
         TransferMoneyRequest transferMoneyRequest = new TransferMoneyRequest("1010","",new BigDecimal("1500"));
         when(transferMoneyDtoUseCaseConverter.convert(transferMoneyRequestDto)).thenReturn(transferMoneyRequest);
-        doThrow(new UseCaseException(Messages.ACCOUNT_NUMBER_IS_EMPTY)).when(transferMoneyCommandUseCase).execute(transferMoneyRequest);
+        doThrow(new EmptyAccountNumberException()).when(transferMoneyCommandUseCase).execute(transferMoneyRequest);
         //when
         BaseResponseDto baseResponseDto = transferMoneyController.transferMoney(transferMoneyRequestDto);
         //then

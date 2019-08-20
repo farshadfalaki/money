@@ -3,8 +3,7 @@ package com.farshad.money.app.usecase;
 import com.farshad.money.app.entity.Account;
 import com.farshad.money.ports.persistence.AccountGateway;
 import com.farshad.money.ports.persistence.TransactionalRunner;
-import com.farshad.money.ports.usecase.exception.Messages;
-import com.farshad.money.ports.usecase.exception.UseCaseException;
+import com.farshad.money.ports.usecase.exception.*;
 import com.farshad.money.ports.usecase.request.TransferMoneyRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,21 +37,21 @@ public class TransferMoneyUseCaseImpl extends TransactionalCommandUseCase<Transf
 
     void validateRequestData(TransferMoneyRequest transferMoneyRequest){
         if(transferMoneyRequest.getAccountNumber() == null || "".equals(transferMoneyRequest.getAccountNumber())){
-            throw new UseCaseException(Messages.ACCOUNT_NUMBER_IS_EMPTY);
+            throw new EmptyAccountNumberException();
         }
 
         if(transferMoneyRequest.getDestAccountNumber() == null || "".equals(transferMoneyRequest.getDestAccountNumber())){
-            throw new UseCaseException(Messages.DEST_ACCOUNT_NUMBER_IS_EMPTY);
+            throw new EmptyDestinationAccountNumberException();
         }
 
         if( (transferMoneyRequest.getAmount() == null) || (transferMoneyRequest.getAmount().compareTo(new BigDecimal("0")) <= 0 )){
-            throw new UseCaseException(Messages.AMOUNT_IS_NEGATIVE);
+            throw new NegativeAmountException();
         }
 
     }
     void validateBusinessRule(Account account, BigDecimal amount){
         if(account.getBalance().compareTo(amount) <= 0){
-            throw new UseCaseException(Messages.BALANCE_IS_LOW + " [" + account.getAccountNumber()+ ","  + amount +"]");
+            throw new LowBalanceException(" [" + account.getAccountNumber()+ ","  + amount +"]");
         }
     }
 

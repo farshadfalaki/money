@@ -4,6 +4,7 @@ import com.farshad.money.controller.converter.DtoUseCaseConverter;
 import com.farshad.money.controller.dto.BaseResponseDto;
 import com.farshad.money.controller.dto.CreateAccountRequestDto;
 import com.farshad.money.ports.usecase.CommandUseCase;
+import com.farshad.money.ports.usecase.exception.EmptyAccountNumberException;
 import com.farshad.money.ports.usecase.exception.Messages;
 import com.farshad.money.ports.usecase.exception.UseCaseException;
 import com.farshad.money.ports.usecase.request.CreateAccountRequest;
@@ -48,7 +49,7 @@ public class CreateAccountControllerTest {
         CreateAccountRequestDto createAccountRequestDto=  new CreateAccountRequestDto("","Josef","10");
         CreateAccountRequest createAccountRequest = new CreateAccountRequest("","Josef",new BigDecimal("10"));
         when(createAccountDtoUseCaseConverter.convert(createAccountRequestDto)).thenReturn(createAccountRequest);
-        doThrow(new UseCaseException(Messages.ACCOUNT_NUMBER_IS_EMPTY)).when(createAccountCommandUseCase).execute(createAccountRequest);
+        doThrow(new EmptyAccountNumberException()).when(createAccountCommandUseCase).execute(createAccountRequest);
         //when
         BaseResponseDto baseResponseDto = createAccountController.createAccount(createAccountRequestDto);
         //then

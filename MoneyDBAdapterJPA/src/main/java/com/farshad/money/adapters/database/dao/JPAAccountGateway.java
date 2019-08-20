@@ -3,8 +3,7 @@ package com.farshad.money.adapters.database.dao;
 import com.farshad.money.adapters.database.model.JPAAccount;
 import com.farshad.money.app.entity.Account;
 import com.farshad.money.ports.persistence.AccountGateway;
-import com.farshad.money.ports.usecase.exception.Messages;
-import com.farshad.money.ports.usecase.exception.UseCaseException;
+import com.farshad.money.ports.usecase.exception.NoSuchAccountNumberException;
 
 import javax.persistence.NoResultException;
 
@@ -23,7 +22,7 @@ public class JPAAccountGateway implements AccountGateway {
         try {
             account = jpaAccountDao.findAccountByAccountNumber(accountNumber);
         }catch (NoResultException e){
-            throw new UseCaseException(Messages.NON_EXISTING_ACCOUNT_NUMBER + " [" + accountNumber + "]");
+            throw new NoSuchAccountNumberException(" [" + accountNumber + "]");
         }
         return account;
     }
