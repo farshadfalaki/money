@@ -1,6 +1,6 @@
 package com.farshad.money.adapters.database;
 
-import com.farshad.money.ports.database.TransactionalRunner;
+import com.farshad.money.ports.persistence.TransactionalRunner;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 

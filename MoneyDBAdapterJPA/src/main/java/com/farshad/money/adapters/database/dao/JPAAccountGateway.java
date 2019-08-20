@@ -2,7 +2,7 @@ package com.farshad.money.adapters.database.dao;
 
 import com.farshad.money.adapters.database.model.JPAAccount;
 import com.farshad.money.app.entity.Account;
-import com.farshad.money.ports.database.AccountGateway;
+import com.farshad.money.ports.persistence.AccountGateway;
 import com.farshad.money.ports.usecase.exception.Messages;
 import com.farshad.money.ports.usecase.exception.UseCaseException;
 

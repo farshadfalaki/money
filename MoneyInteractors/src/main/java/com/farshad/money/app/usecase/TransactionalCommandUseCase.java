@@ -1,6 +1,6 @@
 package com.farshad.money.app.usecase;
 
-import com.farshad.money.ports.database.TransactionalRunner;
+import com.farshad.money.ports.persistence.TransactionalRunner;
 import com.farshad.money.ports.usecase.CommandUseCase;
 
 public abstract class TransactionalCommandUseCase<T> implements

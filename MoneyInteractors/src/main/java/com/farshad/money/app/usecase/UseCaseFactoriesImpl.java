@@ -1,8 +1,8 @@
 package com.farshad.money.app.usecase;
 
 import com.farshad.money.app.entity.Account;
-import com.farshad.money.ports.database.AccountGateway;
-import com.farshad.money.ports.database.TransactionalRunner;
+import com.farshad.money.ports.persistence.AccountGateway;
+import com.farshad.money.ports.persistence.TransactionalRunner;
 import com.farshad.money.ports.usecase.CommandUseCase;
 import com.farshad.money.ports.usecase.UseCaseFactories;
 import com.farshad.money.ports.usecase.request.CreateAccountRequest;

@@ -1,4 +1,4 @@
-package com.farshad.money.ports.database;
+package com.farshad.money.ports.persistence;
 
 import com.farshad.money.app.entity.Account;
 

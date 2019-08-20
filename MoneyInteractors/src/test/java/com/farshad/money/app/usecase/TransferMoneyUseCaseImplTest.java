@@ -1,7 +1,7 @@
 package com.farshad.money.app.usecase;
 
 import com.farshad.money.app.entity.Account;
-import com.farshad.money.ports.database.AccountGateway;
+import com.farshad.money.ports.persistence.AccountGateway;
 import com.farshad.money.ports.usecase.exception.Messages;
 import com.farshad.money.ports.usecase.exception.UseCaseException;
 import com.farshad.money.ports.usecase.request.TransferMoneyRequest;
@@ -10,13 +10,10 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.mockito.stubbing.Answer;
 
 import java.math.BigDecimal;
 
-import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 

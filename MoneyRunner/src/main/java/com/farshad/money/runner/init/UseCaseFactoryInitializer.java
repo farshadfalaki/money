@@ -6,8 +6,8 @@ import com.farshad.money.adapters.database.dao.JPAAccountDao;
 import com.farshad.money.adapters.database.dao.JPAAccountGateway;
 import com.farshad.money.app.entity.Account;
 import com.farshad.money.app.usecase.UseCaseFactoriesImpl;
-import com.farshad.money.ports.database.AccountGateway;
-import com.farshad.money.ports.database.TransactionalRunner;
+import com.farshad.money.ports.persistence.AccountGateway;
+import com.farshad.money.ports.persistence.TransactionalRunner;
 import com.farshad.money.ports.usecase.UseCaseFactories;
 
 import javax.persistence.EntityManager;
